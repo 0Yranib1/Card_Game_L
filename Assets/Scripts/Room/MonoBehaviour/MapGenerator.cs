@@ -5,8 +5,12 @@ using Random = UnityEngine.Random;
 
 public class MapGenerator : MonoBehaviour
 {
+    [Header("地图配置")]
     public MapConfigSO mapConfig;
+    [Header("预制体")]
     public Room roomPrefab;
+
+    public LineRenderer linePrefab;
 
     private float screenHeight;
     private float screenWidth;
@@ -15,6 +19,7 @@ public class MapGenerator : MonoBehaviour
     public float border;
 
     private List<Room> rooms= new List<Room>();
+    private List<LineRenderer> lines = new List<LineRenderer>();
     
     private void Awake()
     {
@@ -30,6 +35,9 @@ public class MapGenerator : MonoBehaviour
 
     public void CreateMap()
     {
+        
+        //创建前一列房间列表
+        List<Room> previousColumnRooms = new List<Room>();
         for (int column = 0; column < mapConfig.roomBluePrints.Count; column++)
         {
             var blueprint=mapConfig.roomBluePrints[column];
@@ -41,7 +49,8 @@ public class MapGenerator : MonoBehaviour
             
             var newPosition=generatePoint;
 
-
+            //当前列房间列表
+            List<Room> currentColumnRooms = new List<Room>();
             
             var roomGapY=screenHeight/(amount+1);
             for (int i = 0; i < amount; i++)
@@ -61,8 +70,17 @@ public class MapGenerator : MonoBehaviour
                 var room=Instantiate(roomPrefab, newPosition,Quaternion.identity,transform);
                 
                 rooms.Add(room);
+                currentColumnRooms.Add(room);
             }
-            
+            //判断当前列是否为第一列 不是则连接到上一列
+            if (previousColumnRooms.Count > 0)
+            {
+                //创建两个列表的房间连线
+                CreateConnections(previousColumnRooms, currentColumnRooms);
+            }
+            previousColumnRooms = currentColumnRooms;
+
+
         }
     }
 
@@ -76,7 +94,44 @@ public class MapGenerator : MonoBehaviour
         {
             Destroy(room.gameObject);
         }
+
+        foreach (var line in lines)
+        {
+            Destroy(line.gameObject);
+        }
         rooms.Clear();
+        lines.Clear();
         CreateMap();
+    }
+
+    void CreateConnections(List<Room> column1, List<Room> column2)
+    {
+        HashSet<Room> connectedColumn2Rooms = new HashSet<Room>();
+        foreach (var room in column1)
+        {
+            var targetRoom= ConnectToRandomRoom(room, column2);
+            connectedColumn2Rooms.Add(targetRoom);
+        }
+        foreach (var room in column2)
+        {
+            if (!connectedColumn2Rooms.Contains(room))
+            {
+                ConnectToRandomRoom(room, column1);
+            }
+        }
+    }
+
+    private Room ConnectToRandomRoom(Room room, List<Room> column2)
+    {
+        Room targetRoom;
+        targetRoom=column2[Random.Range(0, column2.Count)];
+        
+        //创建连线
+        var line = Instantiate(linePrefab, transform);
+        line.SetPosition(0, room.transform.position);
+        line.SetPosition(1, targetRoom.transform.position);
+        lines.Add(line);
+        
+        return targetRoom;
     }
 }
