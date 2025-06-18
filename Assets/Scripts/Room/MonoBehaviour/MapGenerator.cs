@@ -21,11 +21,18 @@ public class MapGenerator : MonoBehaviour
     private List<Room> rooms= new List<Room>();
     private List<LineRenderer> lines = new List<LineRenderer>();
     
+    public List<RoomDataSO> roomDataList= new List<RoomDataSO>();
+    private Dictionary<RoomType, RoomDataSO> roomDataDict = new Dictionary<RoomType, RoomDataSO>();
     private void Awake()
     {
         screenHeight=  Camera.main.orthographicSize  * 2;
         screenWidth = screenHeight*  Camera.main.aspect;
         columnWidth = screenWidth / (mapConfig.roomBluePrints.Count+1);
+
+        foreach (var roomData in roomDataList)
+        {
+            roomDataDict.Add(roomData.roomType, roomData);
+        }
     }
 
     private void Start()
@@ -67,7 +74,11 @@ public class MapGenerator : MonoBehaviour
 
                 
                 newPosition.y=startHeight-roomGapY*i;
+                //生成房间
                 var room=Instantiate(roomPrefab, newPosition,Quaternion.identity,transform);
+                RoomType newType= GetRandomRoomType(mapConfig.roomBluePrints[column].roomType) ;
+                room.SetupRoom(column, i, GetRoomData(newType));
+                
                 
                 rooms.Add(room);
                 currentColumnRooms.Add(room);
@@ -133,5 +144,17 @@ public class MapGenerator : MonoBehaviour
         lines.Add(line);
         
         return targetRoom;
+    }
+
+    private RoomDataSO GetRoomData(RoomType roomType)
+    {
+        return roomDataDict[roomType];
+    }
+
+    private RoomType GetRandomRoomType(RoomType flags)
+    {
+        string[] options = flags.ToString().Split(',');
+        string randomOption= options[Random.Range(0, options.Length)];
+        return (RoomType)Enum.Parse(typeof(RoomType), randomOption);
     }
 }
