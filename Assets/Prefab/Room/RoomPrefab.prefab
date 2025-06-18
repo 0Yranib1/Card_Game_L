@@ -137,6 +137,7 @@ MonoBehaviour:
   line: 0
   roomData: {fileID: 11400000, guid: 3bb869b3900c4094a90add76e371aaa2, type: 2}
   roomState: 0
+  loadRoomEvent: {fileID: 11400000, guid: 8cf56f6d34801ba4081040db7c722a95, type: 2}
 --- !u!70 &1805056331471749154
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
