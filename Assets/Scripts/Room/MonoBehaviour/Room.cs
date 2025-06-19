@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -9,22 +10,20 @@ public class Room : MonoBehaviour
     public RoomDataSO roomData;
     public RoomState roomState;
     
-    [Header("广播")] 
+    public List<Vector2Int> linkTo= new List<Vector2Int>(); 
+    [Header("广播")]  
     public ObjectEventSO loadRoomEvent;
     private void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    private void Start()
-    {
-        SetupRoom(0,0,roomData);
-    }
-
     private void OnMouseDown()
     {
-        Debug.Log("点击房间"+roomData.roomType);
-        loadRoomEvent.RaisEvent(roomData,this);
+        if(roomState==RoomState.Attainable)
+        {
+            loadRoomEvent.RaisEvent(this, this);
+        }
     }
 
     /// <summary>
@@ -39,5 +38,13 @@ public class Room : MonoBehaviour
         this.line=line;
         this.roomData = roomData;
         spriteRenderer.sprite = roomData.roomIcon;
+        spriteRenderer.color = roomState switch
+        {
+            RoomState.Locked=>Color.gray,
+            RoomState.Visited=>new Color(0.5f,0.8f,0.5f,0.5f),
+            RoomState.Attainable=>Color.white,
+            _=>throw new SystemException("房间颜色相关错误")
+        };
+        
     }
 }
