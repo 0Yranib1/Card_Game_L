@@ -17,3 +17,8 @@ public enum RoomState
 {
     Locked,Visited,Attainable
 }
+
+public enum CardType
+{
+    Attack,Defense,Abilities
+}
