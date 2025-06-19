@@ -307,6 +307,7 @@ GameObject:
   - component: {fileID: 536651956}
   - component: {fileID: 536651955}
   - component: {fileID: 536651954}
+  - component: {fileID: 536651958}
   m_Layer: 0
   m_Name: BackToMap
   m_TagString: Untagged
@@ -326,6 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87119c16baea59a409ff37be2efc29b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadMapEvent: {fileID: 0}
 --- !u!61 &536651955
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -443,6 +445,19 @@ Transform:
   - {fileID: 214494900}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &536651958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536651953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87119c16baea59a409ff37be2efc29b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadMapEvent: {fileID: 11400000, guid: 9f64edf82a2533148bf6eadee3e4640e, type: 2}
 --- !u!1 &722884503
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class FinishRoom : MonoBehaviour
 {
+    public ObjectEventSO loadMapEvent;
     private void OnMouseDown()
     {
-        throw new NotImplementedException();
+        //返回地图
+        loadMapEvent.RaisEvent(null,this);
     }
 }
