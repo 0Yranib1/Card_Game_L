@@ -9,9 +9,20 @@ public class CardManager : MonoBehaviour
     public PoolTool poolTool;
     public List<CardDataSO> cardDataList;
 
+    [Header("卡牌库")]
+    //初始化卡牌库
+    public CardLibrarySO newGameCardLibrary;
+    //玩家卡牌库
+    public CardLibrarySO currentLibrary;
+    
     private void Awake()
     {
         InitializeCardDataList();
+        
+        foreach (var item in newGameCardLibrary.cardLibraryList)
+        {
+            currentLibrary.cardLibraryList.Add(item);
+        }
     }
 
     private void InitializeCardDataList()
@@ -29,5 +40,15 @@ public class CardManager : MonoBehaviour
         {
             Debug.LogError("卡牌资源加载失败");
         }
+    }
+
+    public GameObject GetCardObject()
+    {
+        return poolTool.GetObjectFromPool();
+    }
+
+    public void DiscardCard(GameObject cardObj)
+    {
+        poolTool.ReturnObjectToPool(cardObj);
     }
 }
