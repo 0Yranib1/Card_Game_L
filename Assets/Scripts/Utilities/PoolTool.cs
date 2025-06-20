@@ -7,7 +7,7 @@ public class PoolTool : MonoBehaviour
     public GameObject objPrefab;
     private ObjectPool<GameObject> pool;
 
-    private void Start()
+    private void Awake()
     {
         //初始化对象池
         pool = new ObjectPool<GameObject>(
