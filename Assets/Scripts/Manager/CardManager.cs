@@ -25,6 +25,11 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        currentLibrary.cardLibraryList.Clear();
+    }
+
     private void InitializeCardDataList()
     {
         Addressables.LoadAssetsAsync<CardDataSO>(key: "CardData").Completed += OnCardDataLoaded;
@@ -42,9 +47,15 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 抽卡时获得卡牌gameobject
+    /// </summary>
+    /// <returns></returns>
     public GameObject GetCardObject()
     {
-        return poolTool.GetObjectFromPool();
+        var cardObj= poolTool.GetObjectFromPool();
+        cardObj.transform.localScale=Vector3.zero;
+        return cardObj;
     }
 
     public void DiscardCard(GameObject cardObj)
