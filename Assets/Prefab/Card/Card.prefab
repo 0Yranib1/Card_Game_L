@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 2895612176913753122}
   - component: {fileID: 1531320795333456009}
   - component: {fileID: 6187263599958208775}
+  - component: {fileID: -6137280400769744711}
   m_Layer: 6
   m_Name: Card
   m_TagString: Untagged
@@ -198,6 +199,22 @@ MonoBehaviour:
   descriptionText: {fileID: 3636776718503725619}
   typeText: {fileID: 657267269179628521}
   cardData: {fileID: 0}
+  originalPosition: {x: 0, y: 0, z: 0}
+  originalRotation: {x: 0, y: 0, z: 0, w: 0}
+  originalLayerOrder: 0
+  isAnimating: 0
+--- !u!114 &-6137280400769744711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131144005366790201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae78c6d1ed960024dba5158279b11326, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2314983995063866041
 GameObject:
   m_ObjectHideFlags: 0
