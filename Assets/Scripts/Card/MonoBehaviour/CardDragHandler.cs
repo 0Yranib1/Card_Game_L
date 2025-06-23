@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 
 public class CardDragHandler :MonoBehaviour, IBeginDragHandler,IDragHandler,IEndDragHandler
 {
+    public GameObject arrowPrefab;
+    private GameObject currentArrow;
     private Card currentCard;
     private bool canMove;
     private bool canExecute;
@@ -18,6 +20,7 @@ public class CardDragHandler :MonoBehaviour, IBeginDragHandler,IDragHandler,IEnd
         switch (currentCard.cardData.cardType)
         {
             case CardType.Attack:
+                currentArrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
                 break;
             case CardType.Defense:
             case CardType.Abilities:
@@ -41,6 +44,11 @@ public class CardDragHandler :MonoBehaviour, IBeginDragHandler,IDragHandler,IEnd
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (currentArrow != null)
+        {
+            Destroy(currentArrow);
+        }
+        
         if (canExecute)
         {
             
