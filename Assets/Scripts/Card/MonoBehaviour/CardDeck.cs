@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Random = UnityEngine.Random;
 
 public class CardDeck : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class CardDeck : MonoBehaviour
             
         }
         //洗牌
+        ShuffleDeck();
         //更新抽牌堆弃牌堆相关显示
     }
 
@@ -53,13 +55,20 @@ public class CardDeck : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            if (drawDeck.Count == 0)
-            {
-                //洗牌
-            }
-
+            
             CardDataSO currentCardData = drawDeck[0];
             drawDeck.RemoveAt(0);
+            
+            if (drawDeck.Count == 0)
+            {
+                foreach (var item in discardDeck)
+                {
+                    drawDeck.Add(item);
+                }
+                ShuffleDeck();
+            }
+
+
 
             var card = cardManager.GetCardObject().GetComponent<Card>();
             //初始化卡牌
@@ -91,6 +100,34 @@ public class CardDeck : MonoBehaviour
             currentCard.GetComponent<SortingGroup>().sortingOrder = i;
             currentCard.UpdatePositionRotation(cardTransform.pos, cardTransform.rotation);
         }
+    }
+
+    
+    /// <summary>
+    /// 洗牌
+    /// </summary>
+    private void ShuffleDeck()
+    {
+        discardDeck.Clear();
+        //更新UI
+        for (int i = 0; i < drawDeck.Count; i++)
+        {
+            CardDataSO temp = drawDeck[i];
+            int randomIndex = Random.Range(i , drawDeck.Count);
+            drawDeck[i] = drawDeck[randomIndex];
+            drawDeck[randomIndex] = temp;
+        }
+    }
+    /// <summary>
+    /// 弃牌
+    /// </summary>
+    /// <param name="card"></param>
+    public void DiscardCard(Card card)
+    { 
+        discardDeck.Add(card.cardData);
+        handCardObjectList.Remove(card);
+        cardManager.DiscardCard(card.gameObject);
+        SetCardLayout(0f);
     }
     
 }
